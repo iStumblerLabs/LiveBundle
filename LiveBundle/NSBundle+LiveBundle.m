@@ -6,12 +6,11 @@ NSString* const ILLiveBundleURLKey = @"ILLiveBundleURLKey";
 NSString* const ILLiveBundleResourceUpdateNote = @"PluginLiveBundleResourceUpdateNote";
 NSString* const ILPlistType = @"plist";
 
-#pragma mark -
+// MARK: -
 
 @implementation NSBundle (LiveBundle)
 
-+ (NSBundle*) bundleWithResource:(NSString*) name ofType:(NSString*) extension
-{
++ (NSBundle*) bundleWithResource:(NSString*) name ofType:(NSString*) extension {
     NSBundle* firstMatch = nil;
     for (NSBundle* appBundle in [NSBundle allBundles]) {
         if ([appBundle pathForResource:name ofType:extension]) {
@@ -22,8 +21,7 @@ NSString* const ILPlistType = @"plist";
     return firstMatch;
 }
 
-+ (NSBundle*) frameworkWithResource:(NSString*) name ofType:(NSString*) extension
-{
++ (NSBundle*) frameworkWithResource:(NSString*) name ofType:(NSString*) extension {
     NSBundle* firstMatch = nil;
     for (NSBundle* frameworkBundle in [NSBundle allFrameworks]) {
         if ([frameworkBundle pathForResource:name ofType:extension]) {
@@ -34,8 +32,7 @@ NSString* const ILPlistType = @"plist";
     return firstMatch;
 }
 
-+ (BOOL) trashLiveBundles:(NSError**) error
-{
++ (BOOL) trashLiveBundles:(NSError**) error {
     NSArray* searchPaths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSURL* liveBundlesURL = [NSURL fileURLWithPath:[searchPaths.lastObject stringByAppendingPathComponent:ILLiveBundles]];
 #if TARGET_OS_OSX
@@ -49,8 +46,7 @@ NSString* const ILPlistType = @"plist";
 #endif
 }
 
-+ (BOOL) trashLiveBundles
-{
++ (BOOL) trashLiveBundles {
     NSError* trashError = nil;
     BOOL wasTrashed = [self trashLiveBundles:&trashError];
     if (!wasTrashed) {
@@ -59,17 +55,15 @@ NSString* const ILPlistType = @"plist";
     return wasTrashed;
 }
 
-#pragma mark -
+// MARK: -
 
-- (NSString*) liveBundlePath
-{
+- (NSString*) liveBundlePath {
     return [[[NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES) lastObject]
              stringByAppendingPathComponent:ILLiveBundles]
              stringByAppendingPathComponent:[self bundleIdentifier]];
 }
 
-- (NSURL*) remoteURLForResource:(NSString*) resource withExtension:(NSString*) type
-{
+- (NSURL*) remoteURLForResource:(NSString*) resource withExtension:(NSString*) type {
     NSURL* remoteURL = nil;
     NSString* bundleURL = [[self infoDictionary] objectForKey:ILLiveBundleURLKey]; // this is set per-bundle
     if (bundleURL) {
@@ -82,8 +76,7 @@ NSString* const ILPlistType = @"plist";
 }
 
 /* @returns an interned NSString* with the path for the URL specified */
-- (NSString*) livePathForResourceURL:(NSURL*) download
-{
+- (NSString*) livePathForResourceURL:(NSURL*) download {
     static NSMutableDictionary* pathCache; // holds the interened paths, so that the NSNotifications are delivered
 
     if (!pathCache) {
@@ -100,13 +93,11 @@ NSString* const ILPlistType = @"plist";
 }
 
 /** @returns the temp path for a given url download */
-- (NSString*) tempPathForResourceURL:(NSURL*) download
-{
+- (NSString*) tempPathForResourceURL:(NSURL*) download {
     return [NSTemporaryDirectory() stringByAppendingPathComponent:[download resourceSpecifier]];
 }
 
-- (NSString*) livePathForResource:(NSString*) resource ofType:(NSString*) type
-{
+- (NSString*) livePathForResource:(NSString*) resource ofType:(NSString*) type {
     NSURL* remoteResourceURL = [self remoteURLForResource:resource withExtension:type];
     NSString* staticPath = [self pathForResource:resource ofType:type];
     NSString* liveResourcePath = [self livePathForResourceURL:remoteResourceURL]; // interned the string
@@ -210,45 +201,37 @@ exit:
     return liveResourcePath;
 }
 
-#pragma mark - NSURLSessionDelegate Methods
+// MARK: - NSURLSessionDelegate Methods
 
-- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
-{
+- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error {
     if (error) {
         NSLog(@"URLSession: %@ didBecomeInvalidWithError: %@", session, error);
     }
 }
 
-#pragma mark - NSURLSessionTaskDelegate Methods
+// MARK: - NSURLSessionTaskDelegate Methods
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
-{
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler
-{
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task willPerformHTTPRedirection:(NSHTTPURLResponse *)response newRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLRequest *))completionHandler {
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics
-{
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics {
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
-{
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
 }
 
-#pragma mark - NSURLSessionDownloadDelegate Methods
+// MARK: - NSURLSessionDownloadDelegate Methods
 
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes
-{
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didResumeAtOffset:(int64_t)fileOffset expectedTotalBytes:(int64_t)expectedTotalBytes {
 }
 
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-{
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
 }
 
-- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)download didFinishDownloadingToURL:(NSURL *)fileURL
-{
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)download didFinishDownloadingToURL:(NSURL *)fileURL {
     if ([download.response isKindOfClass:[NSHTTPURLResponse class]] && [(NSHTTPURLResponse*)download.response statusCode] == 200) { // OK!
         NSString* liveResourcePath = [self livePathForResourceURL:download.originalRequest.URL];
         

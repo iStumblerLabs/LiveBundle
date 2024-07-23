@@ -2,8 +2,7 @@
 
 @implementation NSDate (NSDateRFC1123)
 
-+ (NSDate*) dateFromRFC1123:(NSString*)value
-{
++ (NSDate*) dateFromRFC1123:(NSString*)value {
     if(value == nil)
         return nil;
     static NSDateFormatter *rfc1123 = nil;
@@ -41,8 +40,7 @@
     return [asctime dateFromString:value];
 }
 
--(NSString*)rfc1123String
-{
+-(NSString*)rfc1123String {
     static NSDateFormatter *df = nil;
     if(df == nil)
     {

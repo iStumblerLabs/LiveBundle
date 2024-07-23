@@ -20,7 +20,7 @@ extern NSString* const ILPlistType;
 /*! @returns YES if the applications LiveBundles directoryw as moved to the trash */
 + (BOOL) trashLiveBundles;
 
-#pragma mark -
+// MARK: -
 
 /*! @returns the local path for the live bundle in the user's Application Support directory */
 - (NSString*) liveBundlePath;
