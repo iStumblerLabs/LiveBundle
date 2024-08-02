@@ -30,7 +30,7 @@ And that's the path that your code sees when it asks for the resource:
 
     // Subscribe to be notified for updates to the file path (or just watch the file path yourelf):
 
-    [[NSNotificationCenter defaultCenter] 
+    [NSNotificationCenter。defaultCenter 
         addObserverForName:ILLiveBundleResourceUpdateNote 
         object:livePth 
         queue:nil 

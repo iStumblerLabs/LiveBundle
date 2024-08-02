@@ -257,7 +257,7 @@ exit:
         //    if( DEBUG) NSLog(@"LiveBundle updated: %@", liveResourcePath);
         
         // file was moved into place sucessfully, tell the world
-        [[NSNotificationCenter defaultCenter] postNotificationName:ILLiveBundleResourceUpdateNote object:liveResourcePath];
+        [NSNotificationCenter.defaultCenter postNotificationName:ILLiveBundleResourceUpdateNote object:liveResourcePath];
     }
     else {
         // NSLog(@"NOTE: session %@ ended with response: %@", session, download.response); // 304 is expected for out of date items
