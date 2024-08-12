@@ -6,6 +6,22 @@
 	objectVersion = 54;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		75207B652C6AC5ED0057B0A9 /* LiveBundle (All) */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 75207B682C6AC5ED0057B0A9 /* Build configuration list for PBXAggregateTarget "LiveBundle (All)" */;
+			buildPhases = (
+			);
+			dependencies = (
+				75207B6A2C6AC5F50057B0A9 /* PBXTargetDependency */,
+				75207B6C2C6AC5F50057B0A9 /* PBXTargetDependency */,
+				75207B6E2C6AC5F50057B0A9 /* PBXTargetDependency */,
+			);
+			name = "LiveBundle (All)";
+			productName = "LiveBundle (All)";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		7578310420F54F8400159E5F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7578310320F54F8400159E5F /* Foundation.framework */; };
 		7578313320F5783800159E5F /* NSBundle+LiveBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E666F11A36E4E9001E7DC4 /* NSBundle+LiveBundle.m */; };
@@ -27,8 +43,31 @@
 		75E666F81A3711BE001E7DC4 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E666F61A3711BE001E7DC4 /* NSDate+RFC1123.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		75207B692C6AC5F50057B0A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75E666C21A36E4C2001E7DC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7578313120F5783800159E5F;
+			remoteInfo = "LiveBundle (iOS)";
+		};
+		75207B6B2C6AC5F50057B0A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75E666C21A36E4C2001E7DC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 75E666CA1A36E4C2001E7DC4;
+			remoteInfo = "LiveBundle (macOS)";
+		};
+		75207B6D2C6AC5F50057B0A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75E666C21A36E4C2001E7DC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 758880BF21862FAD00488CE1;
+			remoteInfo = "LiveBundle (tvOS)";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		7552D9512161984B004FF8C8 /* config.yml */ = {isa = PBXFileReference; lastKnownFileType = text; name = config.yml; path = .circleci/config.yml; sourceTree = "<group>"; };
 		7578310320F54F8400159E5F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7578313F20F5783800159E5F /* LiveBundle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveBundle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7578314120F5786300159E5F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -71,14 +110,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7552D95021619823004FF8C8 /* Packaging */ = {
-			isa = PBXGroup;
-			children = (
-				7552D9512161984B004FF8C8 /* config.yml */,
-			);
-			name = Packaging;
-			sourceTree = "<group>";
-		};
 		7578310220F54F8300159E5F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +126,6 @@
 				75E666CD1A36E4C2001E7DC4 /* LiveBundle */,
 				7578310220F54F8300159E5F /* Frameworks */,
 				75E666CC1A36E4C2001E7DC4 /* Products */,
-				7552D95021619823004FF8C8 /* Packaging */,
 			);
 			sourceTree = "<group>";
 		};
@@ -222,6 +252,9 @@
 				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = iStumbler;
 				TargetAttributes = {
+					75207B652C6AC5ED0057B0A9 = {
+						CreatedOnToolsVersion = 15.4;
+					};
 					75E666CA1A36E4C2001E7DC4 = {
 						CreatedOnToolsVersion = 6.1.1;
 					};
@@ -240,6 +273,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				75207B652C6AC5ED0057B0A9 /* LiveBundle (All) */,
 				7578313120F5783800159E5F /* LiveBundle (iOS) */,
 				758880BF21862FAD00488CE1 /* LiveBundle (tvOS) */,
 				75E666CA1A36E4C2001E7DC4 /* LiveBundle (macOS) */,
@@ -301,7 +335,43 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		75207B6A2C6AC5F50057B0A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7578313120F5783800159E5F /* LiveBundle (iOS) */;
+			targetProxy = 75207B692C6AC5F50057B0A9 /* PBXContainerItemProxy */;
+		};
+		75207B6C2C6AC5F50057B0A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 75E666CA1A36E4C2001E7DC4 /* LiveBundle (macOS) */;
+			targetProxy = 75207B6B2C6AC5F50057B0A9 /* PBXContainerItemProxy */;
+		};
+		75207B6E2C6AC5F50057B0A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 758880BF21862FAD00488CE1 /* LiveBundle (tvOS) */;
+			targetProxy = 75207B6D2C6AC5F50057B0A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		75207B662C6AC5ED0057B0A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E8G8ARB44Z;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		75207B672C6AC5ED0057B0A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = E8G8ARB44Z;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		7578313D20F5783800159E5F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -472,12 +542,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
@@ -528,11 +598,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
+				TVOS_DEPLOYMENT_TARGET = 14.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
@@ -558,7 +628,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -588,7 +657,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -602,6 +670,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		75207B682C6AC5ED0057B0A9 /* Build configuration list for PBXAggregateTarget "LiveBundle (All)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75207B662C6AC5ED0057B0A9 /* Debug */,
+				75207B672C6AC5ED0057B0A9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		7578313C20F5783800159E5F /* Build configuration list for PBXNativeTarget "LiveBundle (iOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

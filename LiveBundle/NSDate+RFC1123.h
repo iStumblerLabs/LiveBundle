@@ -12,12 +12,12 @@
  (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.3.1)
  into NSDate.
 */
-+ (NSDate*) dateFromRFC1123:(NSString*) value;
++ (nullable NSDate*) dateFromRFC1123:(nonnull NSString*) value;
 
 /**
  Convert NSDate into a RFC1123 'Full-Date' string
  (http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.3.1).
 */
-- (NSString*) rfc1123String;
+- (nullable NSString*) rfc1123String;
 
 @end

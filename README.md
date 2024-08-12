@@ -69,11 +69,30 @@ Visit our [Patreon Page](https://www.patreon.com/istumblerlabs) and patronize us
     - it will be selected by default, and the user disabling will set the value to YES
 - deploy resources to your web server and always test before you ship!
 
+## TODO
+
+- <NSDictionary+LiveBundle.h> for plists loaded via livePlistFor:...
+- <NSImage+LiveBundle.h> for images loaded via liveImageFor:...
+
+## Releases
+
+- 1.2 - August 2024
+    * Added tvOS build
+    * Added +[NSBundle trashLiveBudles] to help with app reset tasks
+    * Remove CircleCI build config
+    * Nullability in `NSDate+RFC1123`
+    * Use `dispatch_once` for static formatters
+    * Move TODO items into README.md
+    * Add `LiveBundle (All)` target for build testing
+- 1.1 - November 2017
+- 1.0.1 - 14 May 2016
+- 1.0 - 13 May 2016
+
 ## License
 
     The MIT License (MIT)
 
-    Copyright © 2015-2017 Alf Watt
+    Copyright © 2015-2024 Alf Watt
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
