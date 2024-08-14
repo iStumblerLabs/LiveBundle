@@ -40,15 +40,13 @@ And that's the path that your code sees when it asks for the resource:
         }];
 
 The initial path is a link back to the resource in the application's bundle, once an updated version
-has been sucesfully downloaded the 
+has been sucesfully downloaded the notificaion will be sent to the application. Send `object:nil` to
+recieve notifications for all LiveBundle Resource Updates.
 
 This works well for data that changes on a weekly or monthly basis, the app should only check a URL
 once per launch, or as much as daily if it's running for a long time.
 
-TODO Certificte Pinning Support on top of the existing SSL Nag
-
-<a id="support"></a>
-## Support LiveBundle!
+## Support LiveBundle! <a id="support"></a>
 
 Are you using LiveBundle in your apps? Would you like to help support the project and get a sponsor credit?
 
@@ -56,8 +54,21 @@ Visit our [Patreon Page](https://www.patreon.com/istumblerlabs) and patronize us
 
 ## Using LiveBundle in your App
 
+- Clone the latest sources: `git clone https://github.com/iStumblerLabs/LiveBundle.git` 
+  near or inside your application's source 
+- Drag `LiveBundle.xcodproj` into your project
 - include the `LiveBundle.framework` in your applications `Resources/Frameworks` directory
     - link the `LiveBundle.framework` to all the targets which produce bundles you would like to update
+
+## Swift Package <a id="spm"></a>
+
+A Swift Package is defined in `Package.swift` for projects using Swift Package Manager, 
+you can include the following URL in your project to use it:
+
+    https://github.com/iStumblerLabs/LiveBundle.git
+
+## Configure LiveBundle
+
 - add a key to the `Info.plist` of all the `NSBundle`s you want to update pionting to the web server
     - `ILLiveBundleURLKey` is the base url for the bundles resources
         - e.g. `https://example.com/livebundle/`
@@ -71,12 +82,15 @@ Visit our [Patreon Page](https://www.patreon.com/istumblerlabs) and patronize us
 
 ## TODO
 
-- <NSDictionary+LiveBundle.h> for plists loaded via livePlistFor:...
-- <NSImage+LiveBundle.h> for images loaded via liveImageFor:...
+- `<NSDictionary+LiveBundle.h>` for plists loaded via `livePlistFor:...`
+- `<NSImage+LiveBundle.h>` for images loaded via `liveImageFor:...`
+- Certificte Pinning Support on top of the existing SSL Nag
 
 ## Releases
 
-- 1.2 - August 2024
+- 1.2.1 - 13 August 2024
+    * Swift Package Manager Support
+- 1.2 - 12 August 2024
     * Added tvOS build
     * Added +[NSBundle trashLiveBudles] to help with app reset tasks
     * Remove CircleCI build config
