@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -141,8 +141,8 @@
 		75E666C11A36E4C2001E7DC4 = {
 			isa = PBXGroup;
 			children = (
-				75207CC52C6C7E530057B0A9 /* Package.swift */,
 				75E666F41A36E56E001E7DC4 /* README.md */,
+				75207CC52C6C7E530057B0A9 /* Package.swift */,
 				75207CC42C6C7E0A0057B0A9 /* Sources */,
 				7578310220F54F8300159E5F /* Frameworks */,
 				75E666CC1A36E4C2001E7DC4 /* Products */,
@@ -267,8 +267,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
+				CLASSPREFIX = "";
 				LastUpgradeCheck = 1540;
-				ORGANIZATIONNAME = iStumbler;
+				ORGANIZATIONNAME = "iStumbler Labs";
 				TargetAttributes = {
 					75207B652C6AC5ED0057B0A9 = {
 						CreatedOnToolsVersion = 15.4;
@@ -279,7 +280,7 @@
 				};
 			};
 			buildConfigurationList = 75E666C51A36E4C2001E7DC4 /* Build configuration list for PBXProject "LiveBundle" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 15.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
