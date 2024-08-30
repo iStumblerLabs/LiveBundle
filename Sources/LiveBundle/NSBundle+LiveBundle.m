@@ -133,7 +133,8 @@ NSString* const ILPlistType = @"plist";
 #endif
         
         // does the live bundle path exist?
-        if ([NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:nil]) {
+        if ([NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:nil] // true if a reagular file exists, target may not be accessable on iOS and returns false
+         || [NSFileManager.defaultManager destinationOfSymbolicLinkAtPath:liveResourcePath error:nil] != nil) { // check to see if the file is a resolveable symbolic link
             liveInfo = [NSFileManager.defaultManager attributesOfItemAtPath:liveResourcePath error:nil];
             
             // check the dates on the file, was the bundle updated?
