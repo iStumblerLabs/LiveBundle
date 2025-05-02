@@ -18,6 +18,7 @@ NSString* const ILPlistType = @"plist";
             break; // for
         }
     }
+
     return firstMatch;
 }
 
@@ -29,6 +30,7 @@ NSString* const ILPlistType = @"plist";
             break; // for
         }
     }
+
     return firstMatch;
 }
 
@@ -52,6 +54,7 @@ NSString* const ILPlistType = @"plist";
     if (!wasTrashed) {
         NSLog(@"trashLiveBundles error: %@", trashError);
     }
+
     return wasTrashed;
 }
 
@@ -71,7 +74,7 @@ NSString* const ILPlistType = @"plist";
         remoteURL = [[liveBundleURL URLByAppendingPathComponent:resource] URLByAppendingPathExtension:type];
     }
     else NSLog(@"WARNING LiveBundle remoteURLForResource:... %@ infoDictionary does not contain an ILLiveBundleURLKey", self);
-    
+
     return remoteURL;
 }
 
@@ -82,7 +85,7 @@ NSString* const ILPlistType = @"plist";
     if (!pathCache) {
         pathCache = NSMutableDictionary.new;
     }
-    
+
     if (download && ![pathCache objectForKey:download]) {
         NSString* resourceFile = [download lastPathComponent];
         NSString* liveResourcePath = [self.liveBundlePath stringByAppendingPathComponent:resourceFile];
@@ -98,70 +101,98 @@ NSString* const ILPlistType = @"plist";
 }
 
 - (NSString*) livePathForResource:(NSString*) resource ofType:(NSString*) type {
-    NSURL* remoteResourceURL = [self remoteURLForResource:resource withExtension:type];
-    NSString* staticPath = [self pathForResource:resource ofType:type];
-    NSString* liveResourcePath = [self livePathForResourceURL:remoteResourceURL]; // interned the string
+    NSURL* remoteResourceURL = [self remoteURLForResource:resource withExtension:type]; // URL to the resource
+    NSString* liveResourcePath = [self livePathForResourceURL:remoteResourceURL]; // path the app will use
+    NSString* staticResourcePath = [self pathForResource:resource ofType:type]; // path to the resource in the app bundle
 
-    if (liveResourcePath) {
+    if (staticResourcePath && liveResourcePath) {
         NSError* error = nil;
+        BOOL isDirectory = NO;
 
-        // check for existing live files
-        if (![NSFileManager.defaultManager fileExistsAtPath:self.liveBundlePath isDirectory:nil]) {
-            if (![NSFileManager.defaultManager createDirectoryAtPath:self.liveBundlePath withIntermediateDirectories:YES attributes:nil error:&error]) {
-                NSLog(@"ERROR LiveBundle livePathForResource can't create: %@ error: %@", [self liveBundlePath], error);
-                return staticPath;
-            }
+#if DEBUG
+        // check for Xcode/DerivedData in the staticPath, don't link up to build products or simulator resources
+        if (([staticResourcePath rangeOfString:@"Xcode/DerivedData"].location != NSNotFound)
+         || ([staticResourcePath rangeOfString:@"Developer/CoreSimulator"].location != NSNotFound)) {
+            NSLog(@"DEBUG LiveBundle using staticPath: %@ remoteURL: %@", staticResourcePath, remoteResourceURL);
+            return staticResourcePath;
+        }
+#endif
+
+        // check for existance of file at staticResourcePath, and that it's not a directory
+        if (![NSFileManager.defaultManager fileExistsAtPath:staticResourcePath isDirectory:&isDirectory]) {
+            NSLog(@"WARNING LiveBundle livePathForResource can't find static resource: %@", staticResourcePath);
+            return staticResourcePath;
+        }
+        else if (isDirectory) {
+            NSLog(@"WARNING LiveBundle livePathForResource can't link live resource: %@ is a directory", staticResourcePath);
+            return staticResourcePath;
         }
 
-        // check for read write permission in the resource path
+        // check for existing liveBundlePath, create if necessary
+        isDirectory = NO;
+        BOOL liveBundlePathExists = [NSFileManager.defaultManager fileExistsAtPath:self.liveBundlePath isDirectory:&isDirectory];
+        if (liveBundlePathExists && !isDirectory) { // regular file in the way, attempt to remove it
+            if (![NSFileManager.defaultManager removeItemAtPath:self.liveBundlePath error:&error]) {
+                NSLog(@"ERROR LiveBundle livePathForResource can't remove: %@ error: %@", self.liveBundlePath, error);
+                return staticResourcePath;
+            }
+            liveBundlePathExists = NO; // recently removed
+        }
+
+        // path either didn't exist, or was sucessfully removed
+        if (!liveBundlePathExists && ![NSFileManager.defaultManager createDirectoryAtPath:self.liveBundlePath withIntermediateDirectories:YES attributes:nil error:&error]) {
+            NSLog(@"ERROR LiveBundle livePathForResource can't create: %@ error: %@", [self liveBundlePath], error);
+            return staticResourcePath;
+        }
+
+        // check for read write permission of the liveBundlePath
         if (![NSFileManager.defaultManager isWritableFileAtPath:self.liveBundlePath]
          || ![NSFileManager.defaultManager isReadableFileAtPath:self.liveBundlePath]) { // we can't access the path
             NSLog(@"ERROR LiveBundle livePathForResource can't read or write to: %@", self.liveBundlePath);
-            return staticPath;
+            return staticResourcePath;
         }
 
-        // get some info
-        NSDictionary* liveInfo = nil;
-        NSDictionary* staticInfo = [NSFileManager.defaultManager attributesOfItemAtPath:staticPath error:&error];
+        // get info for the static and live paths
+        NSDictionary* staticInfo = [NSFileManager.defaultManager attributesOfItemAtPath:staticResourcePath error:&error];
+        NSDictionary* liveInfo = [NSFileManager.defaultManager attributesOfItemAtPath:liveResourcePath error:&error];
 
-#if DEBUG
-        // check for Xcode/DerivedData in the staticPath, don't link up build products
-        if ([staticPath rangeOfString:@"Xcode/DerivedData"].location != NSNotFound) {
-            NSLog(@"DEBUG LiveBundle using staticPath: %@ remoteURL: %@", staticPath, remoteResourceURL);
-            return staticPath;
-        }
-#endif
-        
-        // does the live bundle path exist?
-        if ([NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:nil] // true if a reagular file exists, target may not be accessable on iOS and returns false
-         || [NSFileManager.defaultManager destinationOfSymbolicLinkAtPath:liveResourcePath error:nil] != nil) { // check to see if the file is a resolveable symbolic link
-            liveInfo = [NSFileManager.defaultManager attributesOfItemAtPath:liveResourcePath error:nil];
-            
-            // check the dates on the file, was the bundle updated?
-            if ((([staticInfo.fileModificationDate timeIntervalSinceDate:[liveInfo fileModificationDate]] > 0) // check for old-ness
-              || (liveInfo.fileSize == 0))) { // also cleanup any random empty files
-                // remove the old or empty version of the resource from the live path
+        if (liveInfo) { // file exists at liveResourcePath, validate it
+            BOOL isValid = NO;
+            isDirectory = NO;
+            // if there is a link, check that it's correctly pointing to the staticResourcePath
+            if (liveInfo && (liveInfo[NSFileType] == NSFileTypeSymbolicLink)) {
+                NSString* livePathLinkTarget = [NSFileManager.defaultManager destinationOfSymbolicLinkAtPath:liveResourcePath error:&error];
+                if (livePathLinkTarget // can't happen
+                 && [NSFileManager.defaultManager fileExistsAtPath:livePathLinkTarget isDirectory:&isDirectory] // points somewhere
+                 && !isDirectory // that's not a directory
+                 && [livePathLinkTarget isEqualToString:staticResourcePath]) { // and is the static path
+                    isValid = YES;
+                }
+            } // if it isn't a link, validate the liveResourcePath; is not a directory, and not an empty file
+            else if ([NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:&isDirectory]
+                && (!isDirectory || liveInfo[NSFileSize] > 0)) {
+                    isValid = YES;
+            }
+
+            if (!isValid) { // attempt to remove the link, directory, or empty file from the live path
                 if (![NSFileManager.defaultManager removeItemAtURL:[NSURL fileURLWithPath:liveResourcePath] error:&error]) {
                     NSLog(@"ERROR in LiveBundle livePathForResource can't remove: %@ error: %@", liveResourcePath, error);
-                    return staticPath;
+                    return staticResourcePath;
                 }
-                // link in the updated resource from the app bundle
-                if (![NSFileManager.defaultManager createSymbolicLinkAtPath:liveResourcePath withDestinationPath:staticPath error:nil]) {
-                    NSLog(@"ERROR in LiveBundle livePathForResrouce can't link after removing: %@ -> %@ error: %@",
-                        staticPath, liveResourcePath, error);
-                    return staticPath;
-                }
-            }
-        }
-        else { // if not, just link in the static path
-            if (![NSFileManager.defaultManager createSymbolicLinkAtPath:liveResourcePath withDestinationPath:staticPath error:&error]) {
-                NSLog(@"ERROR in livePathForResrouce can't link: %@ -> %@ error: %@ info: %@",
-                    staticPath, liveResourcePath, error, staticInfo);
-                return staticPath;
+
+                liveInfo = nil;
             }
         }
 
-        // info may have changed
+        // check to see if a file exists, we canot rely on liveInfo because validation might delete what's there
+        if (![NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:nil]) {
+            if (![NSFileManager.defaultManager createSymbolicLinkAtPath:liveResourcePath withDestinationPath:staticResourcePath error:&error]) {
+                NSLog(@"ERROR in livePathForResrouce can't link: %@ -> %@ error: %@", staticResourcePath, liveResourcePath, error);
+                return staticResourcePath;
+            }
+        }
+
+        // everything is validated and up to date, info may have changed
         liveInfo = [NSFileManager.defaultManager attributesOfItemAtPath:liveResourcePath error:nil];
 
         // make sure the developer isn't a complete idiot
@@ -193,12 +224,10 @@ NSString* const ILPlistType = @"plist";
         else NSLog(@"WARNING livePathForResource will not load resrouces over an insecure connection.\n\nUse https://letsencrypt.org to get free SSL certs for your site\n\n");
     }
     else {
-        NSLog(@"WARNING livePathForResource:%@ ofType:%@ could not determine liveResourcePath from URL: %@ (did you set ILLiveBundleURLKey in your Info.plist?) returning static path %@", resource, type, remoteResourceURL, staticPath);
-        liveResourcePath = staticPath; // just provide the static path if the url hasn't been configured
+        NSLog(@"WARNING livePathForResource:%@ ofType:%@ could not determine liveResourcePath from URL: %@ (did you set ILLiveBundleURLKey in your Info.plist?) returning static path %@", resource, type, remoteResourceURL, staticResourcePath);
+        return staticResourcePath;
     }
 
-exit:
-    
     return liveResourcePath;
 }
 
@@ -235,28 +264,28 @@ exit:
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)download didFinishDownloadingToURL:(NSURL *)fileURL {
     if ([download.response isKindOfClass:[NSHTTPURLResponse class]] && [(NSHTTPURLResponse*)download.response statusCode] == 200) { // OK!
         NSString* liveResourcePath = [self livePathForResourceURL:download.originalRequest.URL];
-        
-        NSFileManager* fm = [NSFileManager defaultManager];
         NSError* error = nil;
-        
+
         // TODO check integrety of the temp file against HTTP MD5 header if provided
-        
         // is something at the liveResourcePath already? we should remove that
-        if ([fm fileExistsAtPath:liveResourcePath isDirectory:nil]) {
-            if (![fm removeItemAtURL:[NSURL fileURLWithPath:liveResourcePath] error:&error]) {
+        if ([NSFileManager.defaultManager fileExistsAtPath:liveResourcePath isDirectory:nil]) {
+            if (![NSFileManager.defaultManager removeItemAtURL:[NSURL fileURLWithPath:liveResourcePath] error:&error]) {
                 NSLog(@"ERROR in connectionDidFinishLoading can't remove: %@ error: %@", liveResourcePath, error);
                 goto exit;
             }
         }
-        
+
         // the landing site it clear, move the temp file over to the resrouce path
-        if (![fm moveItemAtPath:fileURL.path toPath:liveResourcePath error:&error]) {
+        if (![NSFileManager.defaultManager moveItemAtPath:fileURL.path toPath:liveResourcePath error:&error]) {
             NSLog(@"ERROR in connectionDidFinishLoading can't move: %@ -> %@ error: %@", fileURL.path, liveResourcePath, error);
             goto exit;
         }
-        
-        //    if( DEBUG) NSLog(@"LiveBundle updated: %@", liveResourcePath);
-        
+
+#if DEBUG
+        NSLog(@"LiveBundle updated: %@ from: %@ original: %@", liveResourcePath,
+              download.currentRequest.URL, download.originalRequest.URL);
+#endif
+
         // file was moved into place sucessfully, tell the world
         [NSNotificationCenter.defaultCenter postNotificationName:ILLiveBundleResourceUpdateNote object:liveResourcePath];
     }

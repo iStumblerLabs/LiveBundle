@@ -29,10 +29,8 @@
 		7578313820F5783800159E5F /* LiveBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666D01A36E4C2001E7DC4 /* LiveBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7578313920F5783800159E5F /* NSBundle+LiveBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666F01A36E4E9001E7DC4 /* NSBundle+LiveBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7578313A20F5783800159E5F /* NSDate+RFC1123.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666F51A3711BE001E7DC4 /* NSDate+RFC1123.h */; };
-		7578314220F5786300159E5F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7578314120F5786300159E5F /* Foundation.framework */; };
 		758880C121862FAD00488CE1 /* NSBundle+LiveBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E666F11A36E4E9001E7DC4 /* NSBundle+LiveBundle.m */; };
 		758880C221862FAD00488CE1 /* NSDate+RFC1123.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E666F61A3711BE001E7DC4 /* NSDate+RFC1123.m */; };
-		758880C421862FAD00488CE1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7578314120F5786300159E5F /* Foundation.framework */; };
 		758880C621862FAD00488CE1 /* LiveBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666D01A36E4C2001E7DC4 /* LiveBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		758880C721862FAD00488CE1 /* NSBundle+LiveBundle.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666F01A36E4E9001E7DC4 /* NSBundle+LiveBundle.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		758880C821862FAD00488CE1 /* NSDate+RFC1123.h in Headers */ = {isa = PBXBuildFile; fileRef = 75E666F51A3711BE001E7DC4 /* NSDate+RFC1123.h */; };
@@ -71,7 +69,6 @@
 		75207CC52C6C7E530057B0A9 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		7578310320F54F8400159E5F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7578313F20F5783800159E5F /* LiveBundle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveBundle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7578314120F5786300159E5F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		758880CD21862FAD00488CE1 /* LiveBundle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveBundle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E666CB1A36E4C2001E7DC4 /* LiveBundle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveBundle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E666CF1A36E4C2001E7DC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -88,7 +85,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7578314220F5786300159E5F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,7 +92,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				758880C421862FAD00488CE1 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,7 +127,6 @@
 		7578310220F54F8300159E5F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7578314120F5786300159E5F /* Foundation.framework */,
 				7578310320F54F8400159E5F /* Foundation.framework */,
 			);
 			name = Frameworks;
@@ -268,7 +262,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = "";
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1630;
 				ORGANIZATIONNAME = "iStumbler Labs";
 				TargetAttributes = {
 					75207B652C6AC5ED0057B0A9 = {
@@ -378,6 +372,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E8G8ARB44Z;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -387,6 +382,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = E8G8ARB44Z;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -410,7 +406,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -440,7 +436,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -469,7 +465,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -499,7 +495,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -517,7 +513,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -563,7 +558,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 				TVOS_DEPLOYMENT_TARGET = 14.0;
@@ -579,7 +573,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
@@ -619,7 +612,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MACOSX_DEPLOYMENT_TARGET = "$(RECOMMENDED_MACOSX_DEPLOYMENT_TARGET)";
-				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				TVOS_DEPLOYMENT_TARGET = 14.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -647,6 +639,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
@@ -676,6 +669,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu99 gnu++11";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.istumbler.labs.$(PRODUCT_NAME:rfc1034identifier)";
