@@ -2,7 +2,7 @@
 # LiveBundle
 
 ```
-This form of LiveBundle is no longer maintained, use: git@github.com:alfwatt/LiveBundle.git
+This fork of LiveBundle is no longer maintained, use: git@github.com:alfwatt/LiveBundle.git
 ```
 
 ## Keep your Resources Fresh
