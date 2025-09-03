@@ -1,6 +1,10 @@
 
 # LiveBundle
 
+```
+This form of LiveBundle is no longer maintained, use: git@github.com:alfwatt/LiveBundle.git
+```
+
 ## Keep your Resources Fresh
 
 `NSBundle+LiveBundle` is a category which provides dynamic updating of resources from your web server.
